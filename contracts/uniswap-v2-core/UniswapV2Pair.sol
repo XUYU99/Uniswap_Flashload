@@ -158,10 +158,16 @@ contract UniswapV2Pair is IUniswapV2Pair, UniswapV2ERC20 {
             liquidity = Math.sqrt(amount0.mul(amount1)).sub(MINIMUM_LIQUIDITY);
             _mint(address(0), MINIMUM_LIQUIDITY); // permanently lock the first MINIMUM_LIQUIDITY tokens
         } else {
+            console.log(
+                "Pair mint liquidityA=: %d, liquidityB=: %d",
+                amount0.mul(_totalSupply) / _reserve0,
+                amount1.mul(_totalSupply) / _reserve1
+            );
             liquidity = Math.min(
                 amount0.mul(_totalSupply) / _reserve0,
                 amount1.mul(_totalSupply) / _reserve1
             );
+            console.log("Pair mint liquidity %d", liquidity);
         }
         require(liquidity > 0, "UniswapV2: INSUFFICIENT_LIQUIDITY_MINTED");
         _mint(to, liquidity);

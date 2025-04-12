@@ -10,7 +10,7 @@ yarn hardhat run scripts/attack_scripts/deploy01.js --network localhost
 yarn hardhat run scripts/attack_scripts/deploy02.js --network localhost
 yarn hardhat run scripts/attack_scripts/deploy03.js --network localhost
 
-
+yarn hardhat run scripts/uniswap_scripts/addLiquidity_swap_deploy_yes.js --network localhost
 #verify
 yarn hardhat verify --network sepolia 0x4b89966D76477980dABF34eB1691721E9D6b9296 "0xe409121c12E6d748d29c132BE68552Bdc8162a81" "0xe409121c12E6d748d29c132BE68552Bdc8162a81" "1741786236"
 
