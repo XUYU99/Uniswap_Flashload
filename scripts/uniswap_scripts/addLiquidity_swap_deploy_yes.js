@@ -142,35 +142,67 @@ async function main() {
   //owner swap 前拥有kokoToken和acToken的数量
   kokoBalance = await kokoToken.balanceOf(owner);
   acBalance = await acToken.balanceOf(owner);
-  console.log(`owner koko Balance: ${kokoBalance}, ac Balance: ${acBalance}`);
+  console.log(
+    `owner koko Balance: ${ethers.formatEther(
+      kokoBalance
+    )}, ac Balance: ${ethers.formatEther(acBalance)}`
+  );
   //pair 对kokoToken和acToken的库存
   reserves = await pair.getReserves();
   console.log(
-    `swap前 pair的储备量: ${reserves[1].toString()}, ${reserves[0].toString()}`
+    `swap前 pair的储备量: ${ethers.formatEther(
+      reserves[1].toString()
+    )}, ${ethers.formatEther(reserves[0].toString())}`
   );
   totalSupply = await pair.totalSupply();
   console.log("totalSupply: ", totalSupply);
-  const amountIn = ethers.parseEther("100");
-  const amountOutMin = ethers.parseEther("20");
-  const path = [kokoTokenAddress, acTokenAddress]; //前者是input地址，后者地址是output地址
+  const amountIn = ethers.parseEther("10");
+  const amountOutMin = ethers.parseEther("2");
+  const path = [acTokenAddress, kokoTokenAddress]; //前者是input地址，后者地址是output地址
   console.log("swap ing......");
-  let amounts = await router
+  const swapTx = await router
     .connect(owner)
     .swapExactTokensForTokens(amountIn, amountOutMin, path, owner, deadline);
-  console.log(`后`);
+  const amounts = await swapTx.wait();
+  console.log(`后amounts:${amounts[1]}`);
   //owner swap 后拥有kokoToken的数量
   kokoBalance = await kokoToken.balanceOf(owner);
   acBalance = await acToken.balanceOf(owner);
   console.log(
-    `swap后, owner koko Balance: ${kokoBalance}, ac Balance: ${acBalance}`
+    `swap后, owner koko Balance: ${ethers.formatEther(
+      kokoBalance
+    )}, ac Balance: ${ethers.formatEther(acBalance)}`
   );
 
   reserves = await pair.getReserves();
   console.log(
-    `swap后 pair的储备量: ${reserves[1].toString()}, ${reserves[0].toString()}`
+    `swap后 pair的储备量: ${ethers.formatEther(
+      reserves[1].toString()
+    )}, ${ethers.formatEther(reserves[0].toString())}`
   );
   totalSupply = await pair.totalSupply();
-  console.log("swap后 totalSupply: ", totalSupply);
+  console.log("swap后 totalSupply: ", ethers.formatEther(totalSupply));
+  // const amountOut = ethers.parseEther("100");
+  // const amountInMax = ethers.parseEther("60");
+  // const path = [acTokenAddress, kokoTokenAddress]; //前者是input地址，后者地址是output地址
+  // console.log("swap ing......");
+  // let amounts = await router
+  //   .connect(owner)
+  //   .swapTokensForExactTokens(amountOut, amountInMax, path, owner, deadline);
+  // console.log(`后amounts:`);
+  // //owner swap 后拥有kokoToken的数量
+  // kokoBalance = await kokoToken.balanceOf(owner);
+  // acBalance = await acToken.balanceOf(owner);
+  // console.log(
+  //   `swap后, owner koko Balance: ${kokoBalance}, ac Balance: ${acBalance}`
+  // );
+
+  // reserves = await pair.getReserves();
+  // console.log(
+  //   `swap后 pair的储备量: ${reserves[1].toString()}, ${reserves[0].toString()}`
+  // );
+  // totalSupply = await pair.totalSupply();
+  // console.log("swap后 totalSupply: ", totalSupply);
 }
 
 // 执行主函数并处理可能的结果。

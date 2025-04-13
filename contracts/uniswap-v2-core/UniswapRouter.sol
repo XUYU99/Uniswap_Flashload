@@ -187,7 +187,11 @@ contract UniswapRouter is IUniswapRouter {
         //     path[0],
         //     path[1]
         // );
-
+        console.log(
+            "Router swapExactTokensForTokens amounts[0]:%d,amounts[1]:%d",
+            amounts[0],
+            amounts[1]
+        );
         require(
             amounts[amounts.length - 1] >= amountOutMin,
             "UniswapV2Router: INSUFFICIENT_OUTPUT_AMOUNT"
